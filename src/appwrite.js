@@ -17,7 +17,7 @@ export const updateSearchCount = async (searchTerm, movie) => {
     //1. Use Appwrite's SDK to check if the search term already exists in the database.
 try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
-        Query.equal('searchTerm', searchTerm),
+        Query.equal('movie_id', movie.id),
     ])
 
     //2. If it exists, update the search count.
@@ -41,4 +41,17 @@ try {
     }
     
     
+}
+
+export const getTrendingMovies = async () => {
+    try {
+    const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        Query.limit(5),
+        Query.orderDesc('count')
+    ]) 
+    return result.documents;
+    
+    } catch (error) {
+        console.error(error);
+    }
 }
